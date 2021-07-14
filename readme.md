@@ -1,12 +1,36 @@
 ## 参考資料
 
-[日本郵便 - 郵便番号データの説明](https://www.post.japanpost.jp/zipcode/dl/readme.html)
+* [日本郵便 - 郵便番号データの説明](https://www.post.japanpost.jp/zipcode/dl/readme.html)
+* [JavaScriptで全文検索(N-gram)を実装してみる！](https://blog.kozakana.net/2019/12/implementation-of-full-text-search-by-javascript/)
+* [Time Complexity of Java Collections](https://www.baeldung.com/java-collections-complexity)
 
 ## 使い方
 
-TODO
+### Java環境が構築済みの場合
 
-## pre処理
+Java環境がない場合、以下の[docker起動](#docker起動)をご参考ください
+
+* [リリースページ](https://github.com/monkeyWzr/Assignment/releases)から最新のjarをダウンロード
+* 日本郵便の[郵便番号データダウンロードページ](https://www.post.japanpost.jp/zipcode/dl/kogaki-zip.html)からデータをダウンロードし、解凍
+* jarを実行(以下は全国一括データの場合)
+
+```
+java -jar AddressSearch.jar KEN_ALL.CSV
+```
+
+初期起動の場合、インデックスファイルが同じフォルダに作成されます。
+
+### docker起動
+
+[address-search](https://hub.docker.com/r/monkeywzr/address-search)のイメージをご利用ください。
+現時点でこのイメージは全国一括データファイルを利用しています。
+
+```
+docker pull monkeywzr/address-search
+docker run -it --rm monkeywzr/address-search
+```
+
+## データソースのpre処理
 >全角となっている町域部分の文字数が38文字を越える場合、また半角となっているフリガナ部分の文字数が76文字を越える場合は、複数レコードに分割しています。
 
 上記により、複数行に分散されたレコード(町域名、又は町域名フリガナ部分)の結合処理を行う。
