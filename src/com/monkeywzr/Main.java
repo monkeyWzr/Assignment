@@ -1,12 +1,23 @@
 package com.monkeywzr;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-        AddressSearcher searcher = new AddressSearcher("KEN_ALL.CSV");
+        if (args.length == 0) {
+            System.out.println("データソースを指定ください");
+        }
+        String sourceFilePath = args[0];
+        AddressSearcher searcher = null;
+        try {
+            searcher = new AddressSearcher(sourceFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
         Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.println("アドレスを入力ください:");
@@ -15,7 +26,8 @@ public class Main {
             List<String> results = searcher.search(searchStr);
             System.out.println("----- " + results.size() + "件 -----------");
             results.forEach(System.out::println);
-            System.out.println("------------------------");
+            System.out.println("----- " + results.size() + "件 -----------");
+            System.out.println();
         }
     }
 }

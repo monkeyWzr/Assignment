@@ -42,14 +42,14 @@ public class AddressSearcher {
      */
     private Map<String, String> indexes;
 
-    public AddressSearcher(String sourceFilePath) {
+    public AddressSearcher(String sourceFilePath) throws IOException {
         // TODO: charsetが指定可能にする
         this.charset = Charset.forName("SJIS");
         try {
             this.load(sourceFilePath, charset);
         } catch (IOException e) {
             System.out.println("初期化失敗しました");
-            e.printStackTrace();
+            throw e;
         }
     }
 
@@ -68,17 +68,20 @@ public class AddressSearcher {
     private void load(String sourceFilePath, Charset charset) throws IOException {
         try (BufferedReader sourceBr = new BufferedReader(new FileReader(sourceFilePath, charset))) {
             // 分割された複数レコードを結合する(全角となっている町域部分の文字数が38文字を越える場合、また半角となっているフリガナ部分の文字数が76文字を越える場合)
+            //
             this.source = sourceBr.lines()
                     .map(line -> line.split(","))
-                    // 郵便番号で結合する
-                    .collect(Collectors.groupingBy(fields -> fields[2]))
+                    // 郵便番号で結合する。データの元順番を保持するためLinkedHashMapを使う
+                    .collect(Collectors.groupingBy(fields -> fields[2], LinkedHashMap::new, Collectors.toList()))
                     .values().stream()
                     .flatMap(group -> {
                         String[] base = group.get(0);
                         if (group.size() <= 1 || !base[12].equals("0")) {
                             return group.stream().map(arr -> String.join(",", arr));
                         }
-                        group.forEach(arr -> System.out.println(Arrays.toString(arr)));
+                        // debug用
+//                        group.forEach(arr -> System.out.println(Arrays.toString(arr)));
+
                         // 町域フリガナ部分の結合
                         base[5] = joinField(group, 5);
                         // 町域部分の結結合
