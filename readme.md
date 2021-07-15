@@ -9,6 +9,7 @@
 * Dockerfileの修正
 * GitHub Action(push -> jarをリリース-> docker imagesを更新)
 * アプリ内でデータファイルをURLから取得
+* Test
 
 ## 使い方
 
