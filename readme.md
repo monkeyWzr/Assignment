@@ -4,6 +4,12 @@
 * [JavaScriptで全文検索(N-gram)を実装してみる！](https://blog.kozakana.net/2019/12/implementation-of-full-text-search-by-javascript/)
 * [Time Complexity of Java Collections](https://www.baeldung.com/java-collections-complexity)
 
+## TODO
+
+* Dockerfileの修正
+* GitHub Action(push -> jarをリリース-> docker imagesを更新)
+* アプリ内でデータファイルをURLから取得
+
 ## 使い方
 
 ### Java環境が構築済みの場合
